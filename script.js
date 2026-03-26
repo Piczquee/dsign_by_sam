@@ -158,8 +158,20 @@ document.addEventListener('DOMContentLoaded', () => {
     const toggleAuthLink = document.getElementById('toggle-auth-link');
     const authTitle = document.getElementById('auth-title');
     const authSubtitle = document.getElementById('auth-subtitle');
+    const togglePassword = document.getElementById('toggle-password');
     
     let isLoginMode = true;
+
+    // Toggle Password Visibility
+    if (togglePassword) {
+        togglePassword.addEventListener('click', () => {
+            const type = authPassword.getAttribute('type') === 'password' ? 'text' : 'password';
+            authPassword.setAttribute('type', type);
+            togglePassword.classList.toggle('fa-eye');
+            togglePassword.classList.toggle('fa-eye-slash');
+            togglePassword.style.color = type === 'text' ? 'var(--primary-color)' : 'var(--text-muted)';
+        });
+    }
 
     // Toggle between Login and Sign Up Modes smoothly
     const toggleAuthMode = () => {
@@ -236,7 +248,13 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (error) throw error;
                     // Note: onAuthStateChange will automatically unlock the store if successful!
                 } else {
-                    const { error } = await supabaseClient.auth.signUp({ email, password });
+                    const { error } = await supabaseClient.auth.signUp({ 
+                        email, 
+                        password,
+                        options: {
+                            emailRedirectTo: window.location.href
+                        }
+                    });
                     if (error) throw error;
                     authSuccess.innerText = 'Account created successfully! You can now log in.';
                     authSuccess.style.display = 'block';
