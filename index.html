@@ -26,9 +26,12 @@
     <!-- Supabase Auth Modal Overlay -->
     <div id="auth-overlay" class="auth-overlay">
         <div class="auth-box glass-card" style="width: 100%; max-width: 400px; padding: 40px;">
-            <h2 class="section-title" id="auth-title" style="font-size: 2.5rem; text-align: center; margin-bottom: 10px;">Log <span class="highlight">In</span></h2>
-            <p id="auth-subtitle" style="text-align: center; color: var(--text-muted); margin-bottom: 30px;">Welcome! Log in to access the store.</p>
-            
+            <h2 class="section-title" id="auth-title"
+                style="font-size: 2.5rem; text-align: center; margin-bottom: 10px;">Log <span
+                    class="highlight">In</span></h2>
+            <p id="auth-subtitle" style="text-align: center; color: var(--text-muted); margin-bottom: 30px;">Welcome!
+                Log in to access the store.</p>
+
             <form id="auth-form">
                 <div id="signup-fields" style="display: none;">
                     <div class="input-group">
@@ -40,7 +43,7 @@
                         <label for="auth-nickname">Nick Name</label>
                     </div>
                     <div class="input-group">
-                        <input type="tel" id="auth-phone" placeholder=" ">
+                        <input type="tel" id="auth-phone" placeholder=" " maxlength="10" title="10-digit mobile number" oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 10);">
                         <label for="auth-phone">Phone Number</label>
                     </div>
                 </div>
@@ -51,15 +54,22 @@
                 <div class="input-group">
                     <input type="password" id="auth-password" required placeholder=" " style="padding-right: 45px;">
                     <label for="auth-password">Password</label>
-                    <i class="fas fa-eye" id="toggle-password" style="position: absolute; right: 20px; top: 50%; transform: translateY(-50%); color: var(--text-muted); cursor: pointer; transition: color 0.3s; z-index: 10;"></i>
+                    <i class="fas fa-eye" id="toggle-password"
+                        style="position: absolute; right: 20px; top: 50%; transform: translateY(-50%); color: var(--text-muted); cursor: pointer; transition: color 0.3s; z-index: 10;"></i>
                 </div>
-                <p id="auth-error" class="error-msg" style="color: #ff4d4f; font-size: 0.9rem; margin-bottom: 15px; display: none;"></p>
-                <p id="auth-success" class="success-msg" style="color: #52c41a; font-size: 0.9rem; margin-bottom: 15px; display: none;"></p>
-                <button type="submit" class="btn btn-primary w-100" id="auth-btn" style="margin-bottom: 20px;">Log In</button>
+                <p id="auth-error" class="error-msg"
+                    style="color: #ff4d4f; font-size: 0.9rem; margin-bottom: 15px; display: none;"></p>
+                <p id="auth-success" class="success-msg"
+                    style="color: #52c41a; font-size: 0.9rem; margin-bottom: 15px; display: none;"></p>
+                <button type="submit" class="btn btn-primary w-100" id="auth-btn" style="margin-bottom: 20px;">Log
+                    In</button>
             </form>
-            
+
             <div class="auth-switch" style="text-align: center; margin-top: 15px;">
-                <p id="toggle-auth-text" style="color: var(--text-muted); font-size: 0.95rem;">Don't have an account? <span id="toggle-auth-link" style="color: var(--primary-color); cursor: pointer; font-weight: 600;">Sign Up</span></p>
+                <p id="toggle-auth-text" style="color: var(--text-muted); font-size: 0.95rem;">Don't have an account?
+                    <span id="toggle-auth-link"
+                        style="color: var(--primary-color); cursor: pointer; font-weight: 600;">Sign Up</span>
+                </p>
             </div>
         </div>
     </div>
@@ -79,13 +89,19 @@
             <div class="nav-icons" style="position: relative; display: flex; align-items: center;">
                 <a href="#"><i class="fas fa-search"></i></a>
                 <a href="#"><i class="fas fa-shopping-bag"></i></a>
-                
+
                 <!-- User Profile Dropdown -->
                 <div class="user-menu-container" style="position: relative; margin-left: 10px;">
-                    <a href="#" id="user-profile-btn" aria-label="User Profile"><i class="fas fa-user-circle"></i></a>
-                    <div id="user-dropdown" class="glass-card" style="display: none; position: absolute; right: 0; top: 150%; width: 180px; flex-direction: column; padding: 10px; z-index: 1000; border-radius: 12px; box-shadow: var(--glass-glow);">
-                        <a href="#orders" style="padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.1);"><i class="fas fa-box-open" style="margin-right: 8px;"></i> Manage Orders</a>
-                        <a href="#" id="logout-btn" style="padding: 10px; color: #ff4d4f;"><i class="fas fa-sign-out-alt" style="margin-right: 8px;"></i> Logout</a>
+                    <a href="#" id="user-profile-btn" aria-label="User Profile" style="display: flex; align-items: center; gap: 8px;">
+                        <span id="user-display-name" style="font-size: 0.95rem; font-weight: 500; font-family: var(--font-body); color: var(--text-light); text-transform: capitalize;"></span>
+                        <i class="fas fa-user-circle"></i>
+                    </a>
+                    <div id="user-dropdown" class="glass-card"
+                        style="display: none; position: absolute; right: 0; top: 150%; width: 180px; flex-direction: column; padding: 10px; z-index: 1000; border-radius: 12px; box-shadow: var(--glass-glow);">
+                        <a href="#orders" style="padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.1);"><i
+                                class="fas fa-box-open" style="margin-right: 8px;"></i> Manage Orders</a>
+                        <a href="#" id="logout-btn" style="padding: 10px; color: #ff4d4f;"><i
+                                class="fas fa-sign-out-alt" style="margin-right: 8px;"></i> Logout</a>
                     </div>
                 </div>
 
@@ -194,8 +210,11 @@
             <!-- Magnet 1 -->
             <div class="product-card glass-card" data-category="magnets">
                 <div class="product-img-container">
-                    <img src="https://images.unsplash.com/photo-1544816155-12df9643f363?q=80&w=600&auto=format&fit=crop" alt="Fridge Magnets">
-                    <div class="product-overlay"><button class="btn-icon"><i class="fas fa-shopping-cart"></i></button><button class="btn-icon"><i class="fas fa-heart"></i></button></div>
+                    <img src="https://images.unsplash.com/photo-1544816155-12df9643f363?q=80&w=600&auto=format&fit=crop"
+                        alt="Fridge Magnets">
+                    <div class="product-overlay"><button class="btn-icon"><i
+                                class="fas fa-shopping-cart"></i></button><button class="btn-icon"><i
+                                class="fas fa-heart"></i></button></div>
                 </div>
                 <div class="product-info">
                     <h3>Fridge Magnets</h3>
@@ -206,8 +225,11 @@
             <!-- Frame 2 -->
             <div class="product-card glass-card" data-category="frames">
                 <div class="product-img-container">
-                    <img src="https://images.unsplash.com/photo-1544816155-12df9643f363?q=80&w=600&auto=format&fit=crop" alt="Pop up frame">
-                    <div class="product-overlay"><button class="btn-icon"><i class="fas fa-shopping-cart"></i></button><button class="btn-icon"><i class="fas fa-heart"></i></button></div>
+                    <img src="https://images.unsplash.com/photo-1544816155-12df9643f363?q=80&w=600&auto=format&fit=crop"
+                        alt="Pop up frame">
+                    <div class="product-overlay"><button class="btn-icon"><i
+                                class="fas fa-shopping-cart"></i></button><button class="btn-icon"><i
+                                class="fas fa-heart"></i></button></div>
                 </div>
                 <div class="product-info">
                     <h3>Pop Up Frame</h3>
@@ -218,8 +240,11 @@
             <!-- Frame 3 -->
             <div class="product-card glass-card" data-category="frames">
                 <div class="product-img-container">
-                    <img src="https://images.unsplash.com/photo-1544816155-12df9643f363?q=80&w=600&auto=format&fit=crop" alt="Portrait frame">
-                    <div class="product-overlay"><button class="btn-icon"><i class="fas fa-shopping-cart"></i></button><button class="btn-icon"><i class="fas fa-heart"></i></button></div>
+                    <img src="https://images.unsplash.com/photo-1544816155-12df9643f363?q=80&w=600&auto=format&fit=crop"
+                        alt="Portrait frame">
+                    <div class="product-overlay"><button class="btn-icon"><i
+                                class="fas fa-shopping-cart"></i></button><button class="btn-icon"><i
+                                class="fas fa-heart"></i></button></div>
                 </div>
                 <div class="product-info">
                     <h3>Portrait Frame</h3>
@@ -230,8 +255,11 @@
             <!-- Bouquet 1 -->
             <div class="product-card glass-card" data-category="bouquets">
                 <div class="product-img-container">
-                    <img src="https://images.unsplash.com/photo-1544816155-12df9643f363?q=80&w=600&auto=format&fit=crop" alt="Kitkat bouquet">
-                    <div class="product-overlay"><button class="btn-icon"><i class="fas fa-shopping-cart"></i></button><button class="btn-icon"><i class="fas fa-heart"></i></button></div>
+                    <img src="https://images.unsplash.com/photo-1544816155-12df9643f363?q=80&w=600&auto=format&fit=crop"
+                        alt="Kitkat bouquet">
+                    <div class="product-overlay"><button class="btn-icon"><i
+                                class="fas fa-shopping-cart"></i></button><button class="btn-icon"><i
+                                class="fas fa-heart"></i></button></div>
                 </div>
                 <div class="product-info">
                     <h3>Kitkat Bouquet</h3>
@@ -242,8 +270,11 @@
             <!-- Bouquet 2 -->
             <div class="product-card glass-card" data-category="bouquets">
                 <div class="product-img-container">
-                    <img src="https://images.unsplash.com/photo-1544816155-12df9643f363?q=80&w=600&auto=format&fit=crop" alt="Twix bouquet">
-                    <div class="product-overlay"><button class="btn-icon"><i class="fas fa-shopping-cart"></i></button><button class="btn-icon"><i class="fas fa-heart"></i></button></div>
+                    <img src="https://images.unsplash.com/photo-1544816155-12df9643f363?q=80&w=600&auto=format&fit=crop"
+                        alt="Twix bouquet">
+                    <div class="product-overlay"><button class="btn-icon"><i
+                                class="fas fa-shopping-cart"></i></button><button class="btn-icon"><i
+                                class="fas fa-heart"></i></button></div>
                 </div>
                 <div class="product-info">
                     <h3>Twix Bouquet</h3>
@@ -254,8 +285,11 @@
             <!-- Bouquet 3 -->
             <div class="product-card glass-card" data-category="bouquets">
                 <div class="product-img-container">
-                    <img src="https://images.unsplash.com/photo-1544816155-12df9643f363?q=80&w=600&auto=format&fit=crop" alt="Dairy Milk bouquet">
-                    <div class="product-overlay"><button class="btn-icon"><i class="fas fa-shopping-cart"></i></button><button class="btn-icon"><i class="fas fa-heart"></i></button></div>
+                    <img src="https://images.unsplash.com/photo-1544816155-12df9643f363?q=80&w=600&auto=format&fit=crop"
+                        alt="Dairy Milk bouquet">
+                    <div class="product-overlay"><button class="btn-icon"><i
+                                class="fas fa-shopping-cart"></i></button><button class="btn-icon"><i
+                                class="fas fa-heart"></i></button></div>
                 </div>
                 <div class="product-info">
                     <h3>Dairy Milk Bouquet</h3>
@@ -266,8 +300,11 @@
             <!-- Bouquet 4 -->
             <div class="product-card glass-card" data-category="bouquets">
                 <div class="product-img-container">
-                    <img src="https://images.unsplash.com/photo-1544816155-12df9643f363?q=80&w=600&auto=format&fit=crop" alt="Accessories bouquet">
-                    <div class="product-overlay"><button class="btn-icon"><i class="fas fa-shopping-cart"></i></button><button class="btn-icon"><i class="fas fa-heart"></i></button></div>
+                    <img src="https://images.unsplash.com/photo-1544816155-12df9643f363?q=80&w=600&auto=format&fit=crop"
+                        alt="Accessories bouquet">
+                    <div class="product-overlay"><button class="btn-icon"><i
+                                class="fas fa-shopping-cart"></i></button><button class="btn-icon"><i
+                                class="fas fa-heart"></i></button></div>
                 </div>
                 <div class="product-info">
                     <h3>Accessories Bouquet</h3>
@@ -278,8 +315,11 @@
             <!-- Bouquet 5 -->
             <div class="product-card glass-card" data-category="bouquets">
                 <div class="product-img-container">
-                    <img src="https://images.unsplash.com/photo-1544816155-12df9643f363?q=80&w=600&auto=format&fit=crop" alt="Hotwheels bouquet">
-                    <div class="product-overlay"><button class="btn-icon"><i class="fas fa-shopping-cart"></i></button><button class="btn-icon"><i class="fas fa-heart"></i></button></div>
+                    <img src="https://images.unsplash.com/photo-1544816155-12df9643f363?q=80&w=600&auto=format&fit=crop"
+                        alt="Hotwheels bouquet">
+                    <div class="product-overlay"><button class="btn-icon"><i
+                                class="fas fa-shopping-cart"></i></button><button class="btn-icon"><i
+                                class="fas fa-heart"></i></button></div>
                 </div>
                 <div class="product-info">
                     <h3>Hotwheels Bouquet</h3>
@@ -290,8 +330,11 @@
             <!-- Hamper 1 -->
             <div class="product-card glass-card" data-category="hampers">
                 <div class="product-img-container">
-                    <img src="https://images.unsplash.com/photo-1544816155-12df9643f363?q=80&w=600&auto=format&fit=crop" alt="Love Hamper">
-                    <div class="product-overlay"><button class="btn-icon"><i class="fas fa-shopping-cart"></i></button><button class="btn-icon"><i class="fas fa-heart"></i></button></div>
+                    <img src="https://images.unsplash.com/photo-1544816155-12df9643f363?q=80&w=600&auto=format&fit=crop"
+                        alt="Love Hamper">
+                    <div class="product-overlay"><button class="btn-icon"><i
+                                class="fas fa-shopping-cart"></i></button><button class="btn-icon"><i
+                                class="fas fa-heart"></i></button></div>
                 </div>
                 <div class="product-info">
                     <h3>Love Hamper</h3>
@@ -302,8 +345,11 @@
             <!-- Hamper 2 -->
             <div class="product-card glass-card" data-category="hampers">
                 <div class="product-img-container">
-                    <img src="https://images.unsplash.com/photo-1544816155-12df9643f363?q=80&w=600&auto=format&fit=crop" alt="Perfect Partner Gift Box">
-                    <div class="product-overlay"><button class="btn-icon"><i class="fas fa-shopping-cart"></i></button><button class="btn-icon"><i class="fas fa-heart"></i></button></div>
+                    <img src="https://images.unsplash.com/photo-1544816155-12df9643f363?q=80&w=600&auto=format&fit=crop"
+                        alt="Perfect Partner Gift Box">
+                    <div class="product-overlay"><button class="btn-icon"><i
+                                class="fas fa-shopping-cart"></i></button><button class="btn-icon"><i
+                                class="fas fa-heart"></i></button></div>
                 </div>
                 <div class="product-info">
                     <h3>Perfect Partner Gift Box</h3>
@@ -314,8 +360,11 @@
             <!-- Hamper 3 -->
             <div class="product-card glass-card" data-category="hampers">
                 <div class="product-img-container">
-                    <img src="https://images.unsplash.com/photo-1544816155-12df9643f363?q=80&w=600&auto=format&fit=crop" alt="Midnight Black Premium Hamper">
-                    <div class="product-overlay"><button class="btn-icon"><i class="fas fa-shopping-cart"></i></button><button class="btn-icon"><i class="fas fa-heart"></i></button></div>
+                    <img src="https://images.unsplash.com/photo-1544816155-12df9643f363?q=80&w=600&auto=format&fit=crop"
+                        alt="Midnight Black Premium Hamper">
+                    <div class="product-overlay"><button class="btn-icon"><i
+                                class="fas fa-shopping-cart"></i></button><button class="btn-icon"><i
+                                class="fas fa-heart"></i></button></div>
                 </div>
                 <div class="product-info">
                     <h3>Midnight Black Premium Hamper</h3>
@@ -326,8 +375,11 @@
             <!-- Hamper 4 -->
             <div class="product-card glass-card" data-category="hampers">
                 <div class="product-img-container">
-                    <img src="https://images.unsplash.com/photo-1544816155-12df9643f363?q=80&w=600&auto=format&fit=crop" alt="Transparent Hamper Box">
-                    <div class="product-overlay"><button class="btn-icon"><i class="fas fa-shopping-cart"></i></button><button class="btn-icon"><i class="fas fa-heart"></i></button></div>
+                    <img src="https://images.unsplash.com/photo-1544816155-12df9643f363?q=80&w=600&auto=format&fit=crop"
+                        alt="Transparent Hamper Box">
+                    <div class="product-overlay"><button class="btn-icon"><i
+                                class="fas fa-shopping-cart"></i></button><button class="btn-icon"><i
+                                class="fas fa-heart"></i></button></div>
                 </div>
                 <div class="product-info">
                     <h3>Transparent Hamper Box</h3>
@@ -338,8 +390,11 @@
             <!-- Hamper 5 -->
             <div class="product-card glass-card" data-category="hampers">
                 <div class="product-img-container">
-                    <img src="https://images.unsplash.com/photo-1544816155-12df9643f363?q=80&w=600&auto=format&fit=crop" alt="Hijab Hamper">
-                    <div class="product-overlay"><button class="btn-icon"><i class="fas fa-shopping-cart"></i></button><button class="btn-icon"><i class="fas fa-heart"></i></button></div>
+                    <img src="https://images.unsplash.com/photo-1544816155-12df9643f363?q=80&w=600&auto=format&fit=crop"
+                        alt="Hijab Hamper">
+                    <div class="product-overlay"><button class="btn-icon"><i
+                                class="fas fa-shopping-cart"></i></button><button class="btn-icon"><i
+                                class="fas fa-heart"></i></button></div>
                 </div>
                 <div class="product-info">
                     <h3>Hijab Hamper</h3>
@@ -350,8 +405,11 @@
             <!-- Hamper 6 -->
             <div class="product-card glass-card" data-category="hampers">
                 <div class="product-img-container">
-                    <img src="https://images.unsplash.com/photo-1544816155-12df9643f363?q=80&w=600&auto=format&fit=crop" alt="Pop up frame hamper">
-                    <div class="product-overlay"><button class="btn-icon"><i class="fas fa-shopping-cart"></i></button><button class="btn-icon"><i class="fas fa-heart"></i></button></div>
+                    <img src="https://images.unsplash.com/photo-1544816155-12df9643f363?q=80&w=600&auto=format&fit=crop"
+                        alt="Pop up frame hamper">
+                    <div class="product-overlay"><button class="btn-icon"><i
+                                class="fas fa-shopping-cart"></i></button><button class="btn-icon"><i
+                                class="fas fa-heart"></i></button></div>
                 </div>
                 <div class="product-info">
                     <h3>Pop Up Frame Hamper</h3>
@@ -362,8 +420,11 @@
             <!-- Hamper 7 -->
             <div class="product-card glass-card" data-category="hampers">
                 <div class="product-img-container">
-                    <img src="https://images.unsplash.com/photo-1544816155-12df9643f363?q=80&w=600&auto=format&fit=crop" alt="Sweet Memories Hamper">
-                    <div class="product-overlay"><button class="btn-icon"><i class="fas fa-shopping-cart"></i></button><button class="btn-icon"><i class="fas fa-heart"></i></button></div>
+                    <img src="https://images.unsplash.com/photo-1544816155-12df9643f363?q=80&w=600&auto=format&fit=crop"
+                        alt="Sweet Memories Hamper">
+                    <div class="product-overlay"><button class="btn-icon"><i
+                                class="fas fa-shopping-cart"></i></button><button class="btn-icon"><i
+                                class="fas fa-heart"></i></button></div>
                 </div>
                 <div class="product-info">
                     <h3>Sweet Memories Hamper</h3>
@@ -374,8 +435,11 @@
             <!-- Hamper 8 -->
             <div class="product-card glass-card" data-category="hampers">
                 <div class="product-img-container">
-                    <img src="https://images.unsplash.com/photo-1544816155-12df9643f363?q=80&w=600&auto=format&fit=crop" alt="Cute Budget Surprise Box">
-                    <div class="product-overlay"><button class="btn-icon"><i class="fas fa-shopping-cart"></i></button><button class="btn-icon"><i class="fas fa-heart"></i></button></div>
+                    <img src="https://images.unsplash.com/photo-1544816155-12df9643f363?q=80&w=600&auto=format&fit=crop"
+                        alt="Cute Budget Surprise Box">
+                    <div class="product-overlay"><button class="btn-icon"><i
+                                class="fas fa-shopping-cart"></i></button><button class="btn-icon"><i
+                                class="fas fa-heart"></i></button></div>
                 </div>
                 <div class="product-info">
                     <h3>Cute Budget Surprise Box</h3>
@@ -386,8 +450,11 @@
             <!-- Experience 1 -->
             <div class="product-card glass-card" data-category="experiences">
                 <div class="product-img-container">
-                    <img src="https://images.unsplash.com/photo-1544816155-12df9643f363?q=80&w=600&auto=format&fit=crop" alt="19 Gifts for 19 Custom Birthday Experience">
-                    <div class="product-overlay"><button class="btn-icon"><i class="fas fa-shopping-cart"></i></button><button class="btn-icon"><i class="fas fa-heart"></i></button></div>
+                    <img src="https://images.unsplash.com/photo-1544816155-12df9643f363?q=80&w=600&auto=format&fit=crop"
+                        alt="19 Gifts for 19 Custom Birthday Experience">
+                    <div class="product-overlay"><button class="btn-icon"><i
+                                class="fas fa-shopping-cart"></i></button><button class="btn-icon"><i
+                                class="fas fa-heart"></i></button></div>
                 </div>
                 <div class="product-info">
                     <h3>19 Gifts for 19 - Birthday Experience</h3>

@@ -6,11 +6,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const menuBtn = document.querySelector('.menu-btn');
     const navLinks = document.querySelector('.nav-links');
 
-    if(menuBtn) {
+    if (menuBtn) {
         menuBtn.addEventListener('click', () => {
             navLinks.classList.toggle('active');
             const icon = menuBtn.querySelector('i');
-            if(navLinks.classList.contains('active')) {
+            if (navLinks.classList.contains('active')) {
                 icon.classList.remove('fa-bars');
                 icon.classList.add('fa-times');
             } else {
@@ -75,13 +75,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 4. Contact Form Submission (Mock)
     const form = document.getElementById('inquiryForm');
-    if(form) {
+    if (form) {
         form.addEventListener('submit', (e) => {
             e.preventDefault();
             const btn = form.querySelector('button[type="submit"]');
             const originalText = btn.innerHTML;
             btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
-            
+
             setTimeout(() => {
                 alert('Thank you! Your message has been sent to DSIGN_BY_SAM. We will get back to you soon.');
                 form.reset();
@@ -92,16 +92,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 5. Stat Counter Animation
     const counters = document.querySelectorAll('.counter');
-    const speed = 200; 
+    const speed = 200;
 
     const animateCounters = () => {
         counters.forEach(counter => {
             const updateCount = () => {
                 const target = +counter.innerText.replace(/\D/g, ''); // Extract number
                 const count = +counter.getAttribute('data-count') || 0;
-                
+
                 // Initialize the attribute if it's the first time
-                if(!counter.hasAttribute('data-target')) {
+                if (!counter.hasAttribute('data-target')) {
                     counter.setAttribute('data-target', target);
                     counter.innerText = '0' + (counter.innerText.includes('+') ? '+' : counter.innerText.includes('%') ? '%' : '');
                 }
@@ -111,24 +111,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 if (count < finalTarget) {
                     counter.setAttribute('data-count', Math.ceil(count + inc));
-                    
+
                     let suffix = '';
-                    if(counter.getAttribute('data-target') > 100 && !suffix.includes('+')) suffix = '+';
-                    if(counter.getAttribute('data-target') == 100 && !suffix.includes('%')) suffix = '%';
+                    if (counter.getAttribute('data-target') > 100 && !suffix.includes('+')) suffix = '+';
+                    if (counter.getAttribute('data-target') == 100 && !suffix.includes('%')) suffix = '%';
 
                     counter.innerText = Math.ceil(count + inc) + suffix;
                     setTimeout(updateCount, 10);
                 } else {
                     let suffix = '';
-                    if(finalTarget > 100) suffix = '+';
-                    if(finalTarget == 100) suffix = '%';
+                    if (finalTarget > 100) suffix = '+';
+                    if (finalTarget == 100) suffix = '%';
                     counter.innerText = finalTarget + suffix;
                 }
             };
-            
+
             // Intersection Observer to trigger animation when visible
             const observer = new IntersectionObserver((entries) => {
-                if(entries[0].isIntersecting) {
+                if (entries[0].isIntersecting) {
                     updateCount();
                     observer.disconnect();
                 }
@@ -144,7 +144,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // TODO: Replace these with your actual Supabase URL and Anon Key!
     const SUPABASE_URL = 'https://hgmjxzsivucowmtjelij.supabase.co';
     const SUPABASE_ANON_KEY = 'sb_publishable_UFBm_PdNVovwn94IvsvYIw_X5GabOy_';
-    
+
     const isSupabaseConfigured = SUPABASE_URL.startsWith('https://');
     let supabaseClient = null;
 
@@ -159,7 +159,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const authTitle = document.getElementById('auth-title');
     const authSubtitle = document.getElementById('auth-subtitle');
     const togglePassword = document.getElementById('toggle-password');
-    
+
     let isLoginMode = true;
 
     // Toggle Password Visibility
@@ -178,7 +178,17 @@ document.addEventListener('DOMContentLoaded', () => {
         isLoginMode = !isLoginMode;
         authError.style.display = 'none';
         authSuccess.style.display = 'none';
-        
+
+        // Clear credential values when toggling
+        authEmail.value = '';
+        authPassword.value = '';
+        const nameInput = document.getElementById('auth-name');
+        const nickInput = document.getElementById('auth-nickname');
+        const phoneInput = document.getElementById('auth-phone');
+        if (nameInput) nameInput.value = '';
+        if (nickInput) nickInput.value = '';
+        if (phoneInput) phoneInput.value = '';
+
         const signupFields = document.getElementById('signup-fields');
         if (isLoginMode) {
             authTitle.innerHTML = 'Log <span class="highlight">In</span>';
@@ -186,18 +196,18 @@ document.addEventListener('DOMContentLoaded', () => {
             authBtn.innerText = 'Log In';
             toggleAuthLink.innerText = 'Sign Up';
             document.getElementById('toggle-auth-text').childNodes[0].nodeValue = "Don't have an account? ";
-            if(signupFields) signupFields.style.display = 'none';
+            if (signupFields) signupFields.style.display = 'none';
         } else {
             authTitle.innerHTML = 'Sign <span class="highlight">Up</span>';
             authSubtitle.innerText = 'Create an account to start shopping.';
             authBtn.innerText = 'Create Account';
             toggleAuthLink.innerText = 'Log In';
             document.getElementById('toggle-auth-text').childNodes[0].nodeValue = "Already have an account? ";
-            if(signupFields) signupFields.style.display = 'block';
+            if (signupFields) signupFields.style.display = 'block';
         }
     };
 
-    if(toggleAuthLink) {
+    if (toggleAuthLink) {
         toggleAuthLink.addEventListener('click', toggleAuthMode);
     }
 
@@ -205,6 +215,22 @@ document.addEventListener('DOMContentLoaded', () => {
         document.body.classList.add('auth-locked');
         authOverlay.classList.add('active');
         window.scrollTo(0, 0); // Force to top
+    };
+
+    const userDisplayName = document.getElementById('user-display-name');
+
+    const updateUserName = (session) => {
+        if (!session || !userDisplayName) return;
+        const meta = session.user.user_metadata;
+        if (meta) {
+            let name = meta.nick_name || meta.full_name;
+            if (name) {
+                userDisplayName.innerText = name;
+                return;
+            }
+        }
+        // Fallback to email identifier if metadata completely missing
+        userDisplayName.innerText = session.user.email.split('@')[0];
     };
 
     const unlockStore = () => {
@@ -215,10 +241,11 @@ document.addEventListener('DOMContentLoaded', () => {
     if (isSupabaseConfigured) {
         // Initialize Supabase from the CDN we imported in index.html
         supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-        
+
         // 1. Check current logged-in session on page load
         supabaseClient.auth.getSession().then(({ data: { session } }) => {
             if (session) {
+                updateUserName(session);
                 unlockStore();
             } else {
                 lockStore();
@@ -228,6 +255,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // 2. Listen for auth state changes globally (Login / Logout)
         supabaseClient.auth.onAuthStateChange((_event, session) => {
             if (session) {
+                updateUserName(session);
                 unlockStore();
             } else {
                 lockStore();
@@ -251,27 +279,42 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (error) throw error;
                     // Note: onAuthStateChange will automatically unlock the store if successful!
                 } else {
-                    const name = document.getElementById('auth-name').value;
-                    const nickname = document.getElementById('auth-nickname').value;
-                    const phone = document.getElementById('auth-phone').value;
-                     
-                    const { error } = await supabaseClient.auth.signUp({ 
-                        email, 
+                    const nameNode = document.getElementById('auth-name');
+                    const nickNode = document.getElementById('auth-nickname');
+                    const phoneNode = document.getElementById('auth-phone');
+                    
+                    const name = nameNode ? nameNode.value : '';
+                    const nickname = nickNode ? nickNode.value : '';
+                    const phone = phoneNode ? phoneNode.value : '';
+
+                    if (!/^\d{10}$/.test(phone)) {
+                        throw new Error("Please enter a valid 10-digit phone number.");
+                    }
+
+                    const { data, error } = await supabaseClient.auth.signUp({
+                        email,
                         password,
                         options: {
                             data: {
                                 full_name: name,
                                 nick_name: nickname,
-                                phone_number: phone
+                                phone: phone
                             },
                             emailRedirectTo: window.location.href
                         }
                     });
+                    
                     if (error) throw error;
+                    
+                    // Supabase returns an empty identities array if user already exists
+                    if (data?.user && data.user?.identities && data.user.identities.length === 0) {
+                        throw new Error("Account already exists for the email id provided.");
+                    }
+                    
                     authSuccess.innerText = 'Account created successfully! You can now log in.';
                     authSuccess.style.display = 'block';
                     // Switch back to Login mode for them to log in smoothly
-                    setTimeout(toggleAuthMode, 2000); 
+                    setTimeout(toggleAuthMode, 2000);
                 }
             } catch (err) {
                 authError.innerText = err.message;

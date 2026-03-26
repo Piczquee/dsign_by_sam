@@ -531,6 +531,18 @@ a {
     cursor: pointer;
 }
 
+/* Fix Browser Autofill turning inputs glaringly white in Dark Mode */
+.input-group input:-webkit-autofill,
+.input-group input:-webkit-autofill:hover, 
+.input-group input:-webkit-autofill:focus, 
+.input-group textarea:-webkit-autofill,
+.input-group textarea:-webkit-autofill:hover,
+.input-group textarea:-webkit-autofill:focus {
+    -webkit-box-shadow: 0 0 0px 1000px #13151b inset !important;
+    -webkit-text-fill-color: #fff !important;
+    transition: background-color 5000s ease-in-out 0s;
+}
+
 .input-group input:focus, 
 .input-group textarea:focus,
 .input-group select:focus {
