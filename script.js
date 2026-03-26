@@ -179,18 +179,21 @@ document.addEventListener('DOMContentLoaded', () => {
         authError.style.display = 'none';
         authSuccess.style.display = 'none';
         
+        const signupFields = document.getElementById('signup-fields');
         if (isLoginMode) {
             authTitle.innerHTML = 'Log <span class="highlight">In</span>';
             authSubtitle.innerText = 'Welcome! Log in to access the store.';
             authBtn.innerText = 'Log In';
             toggleAuthLink.innerText = 'Sign Up';
             document.getElementById('toggle-auth-text').childNodes[0].nodeValue = "Don't have an account? ";
+            if(signupFields) signupFields.style.display = 'none';
         } else {
             authTitle.innerHTML = 'Sign <span class="highlight">Up</span>';
             authSubtitle.innerText = 'Create an account to start shopping.';
             authBtn.innerText = 'Create Account';
             toggleAuthLink.innerText = 'Log In';
             document.getElementById('toggle-auth-text').childNodes[0].nodeValue = "Already have an account? ";
+            if(signupFields) signupFields.style.display = 'block';
         }
     };
 
@@ -248,10 +251,19 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (error) throw error;
                     // Note: onAuthStateChange will automatically unlock the store if successful!
                 } else {
+                    const name = document.getElementById('auth-name').value;
+                    const nickname = document.getElementById('auth-nickname').value;
+                    const phone = document.getElementById('auth-phone').value;
+                     
                     const { error } = await supabaseClient.auth.signUp({ 
                         email, 
                         password,
                         options: {
+                            data: {
+                                full_name: name,
+                                nick_name: nickname,
+                                phone_number: phone
+                            },
                             emailRedirectTo: window.location.href
                         }
                     });
@@ -278,5 +290,44 @@ document.addEventListener('DOMContentLoaded', () => {
         authBtn.disabled = true;
         authEmail.disabled = true;
         authPassword.disabled = true;
+    }
+
+    // ==========================================
+    // 7. User Profile & Logout Logic
+    // ==========================================
+    const userProfileBtn = document.getElementById('user-profile-btn');
+    const userDropdown = document.getElementById('user-dropdown');
+    const executeLogoutBtn = document.getElementById('logout-btn');
+
+    // Toggle Dropdown Display
+    if (userProfileBtn && userDropdown) {
+        userProfileBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            userDropdown.style.display = userDropdown.style.display === 'none' ? 'flex' : 'none';
+        });
+
+        // Close dropdown when interacting outside the menu
+        document.addEventListener('click', (e) => {
+            if (!userProfileBtn.contains(e.target) && !userDropdown.contains(e.target)) {
+                userDropdown.style.display = 'none';
+            }
+        });
+    }
+
+    // Execute Global Supabase Logout
+    if (executeLogoutBtn && isSupabaseConfigured) {
+        executeLogoutBtn.addEventListener('click', async (e) => {
+            e.preventDefault();
+            try {
+                // Instantly end session
+                const { error } = await supabaseClient.auth.signOut();
+                if (error) throw error;
+                // auth.onAuthStateChange will automatically see the session drop and call lockStore()
+                userDropdown.style.display = 'none'; // hide the dropdown 
+            } catch (err) {
+                console.error("Error logging out", err.message);
+                alert("Failed to log out: " + err.message);
+            }
+        });
     }
 });
