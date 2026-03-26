@@ -373,4 +373,77 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
+
+    // ==========================================
+    // 8. Product Modal Navigation
+    // ==========================================
+    const productModal = document.getElementById('product-modal');
+    const closeProductModal = document.getElementById('close-product-modal');
+    const modalImg = document.getElementById('modal-img');
+    const modalTitle = document.getElementById('modal-title');
+    const modalPrice = document.getElementById('modal-price');
+    const modalQty = document.getElementById('modal-qty');
+    const qtyMinus = document.getElementById('qty-minus');
+    const qtyPlus = document.getElementById('qty-plus');
+    const addToCartBtn = document.getElementById('add-to-cart-btn');
+    const modalCustomization = document.getElementById('modal-customization');
+
+    if (productModal) {
+        document.querySelectorAll('.product-card').forEach(card => {
+            card.style.cursor = 'pointer';
+            card.addEventListener('click', (e) => {
+                // Prevent opening if clicking heart/cart buttons specifically
+                if (e.target.closest('.btn-icon')) return;
+
+                const imgSrc = card.querySelector('img').src;
+                const title = card.querySelector('h3').innerText;
+                const price = card.querySelector('.price').innerText;
+
+                // Bind Data
+                modalImg.src = imgSrc;
+                modalTitle.innerText = title;
+                modalPrice.innerText = price;
+                modalQty.value = 1; // Reset qty
+                modalCustomization.value = ''; // Reset notes
+
+                // Visual Overrides
+                productModal.style.display = 'block';
+                document.body.style.overflow = 'hidden'; 
+                // Scroll to top of modal
+                productModal.scrollTo(0, 0);
+            });
+        });
+
+        closeProductModal.addEventListener('click', () => {
+            productModal.style.display = 'none';
+            document.body.style.overflow = 'auto'; // Unlock scroll
+        });
+
+        // Quantity Logic
+        qtyMinus.addEventListener('click', () => {
+            if (parseInt(modalQty.value) > 1) modalQty.value = parseInt(modalQty.value) - 1;
+        });
+
+        qtyPlus.addEventListener('click', () => {
+            if (parseInt(modalQty.value) < 99) modalQty.value = parseInt(modalQty.value) + 1;
+        });
+
+        // Add to Cart Logic
+        addToCartBtn.addEventListener('click', () => {
+            if (parseInt(modalQty.value) < 1) return;
+            
+            const originalText = addToCartBtn.innerHTML;
+            addToCartBtn.innerHTML = '<i class="fas fa-check"></i> Added to Cart';
+            addToCartBtn.style.background = '#52c41a'; // Success green
+            addToCartBtn.style.boxShadow = '0 4px 15px rgba(82, 196, 26, 0.4)';
+            
+            setTimeout(() => {
+                addToCartBtn.innerHTML = originalText;
+                addToCartBtn.style.background = '';
+                addToCartBtn.style.boxShadow = '';
+                productModal.style.display = 'none';
+                document.body.style.overflow = 'auto'; // Unlock site background
+            }, 1000);
+        });
+    }
 });
