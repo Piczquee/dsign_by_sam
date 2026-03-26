@@ -17,9 +17,37 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Custom CSS -->
     <link rel="stylesheet" href="style.css">
+    <!-- Supabase JS -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 
 <body>
+
+    <!-- Supabase Auth Modal Overlay -->
+    <div id="auth-overlay" class="auth-overlay">
+        <div class="auth-box glass-card" style="width: 100%; max-width: 400px; padding: 40px;">
+            <h2 class="section-title" id="auth-title" style="font-size: 2.5rem; text-align: center; margin-bottom: 10px;">Log <span class="highlight">In</span></h2>
+            <p id="auth-subtitle" style="text-align: center; color: var(--text-muted); margin-bottom: 30px;">Welcome! Log in to access the store.</p>
+            
+            <form id="auth-form">
+                <div class="input-group">
+                    <input type="email" id="auth-email" required placeholder=" ">
+                    <label for="auth-email">Email Address</label>
+                </div>
+                <div class="input-group">
+                    <input type="password" id="auth-password" required placeholder=" ">
+                    <label for="auth-password">Password</label>
+                </div>
+                <p id="auth-error" class="error-msg" style="color: #ff4d4f; font-size: 0.9rem; margin-bottom: 15px; display: none;"></p>
+                <p id="auth-success" class="success-msg" style="color: #52c41a; font-size: 0.9rem; margin-bottom: 15px; display: none;"></p>
+                <button type="submit" class="btn btn-primary w-100" id="auth-btn" style="margin-bottom: 20px;">Log In</button>
+            </form>
+            
+            <div class="auth-switch" style="text-align: center; margin-top: 15px;">
+                <p id="toggle-auth-text" style="color: var(--text-muted); font-size: 0.95rem;">Don't have an account? <span id="toggle-auth-link" style="color: var(--primary-color); cursor: pointer; font-weight: 600;">Sign Up</span></p>
+            </div>
+        </div>
+    </div>
 
     <!-- Navigation -->
     <nav id="navbar">
@@ -68,28 +96,12 @@
 
         <div class="filter-container">
             <button class="filter-btn active" data-filter="all">All</button>
-            <button class="filter-btn" data-filter="mugs">Mugs</button>
             <button class="filter-btn" data-filter="frames">Frames</button>
             <button class="filter-btn" data-filter="hampers">Hampers</button>
             <button class="filter-btn" data-filter="albums">Albums</button>
         </div>
 
         <div class="products-grid">
-            <!-- Product 1 -->
-            <div class="product-card glass-card" data-category="mugs">
-                <div class="product-img-container">
-                    <img src="assets/images/product_mug_1773471863765.png" alt="Personalized Ceramic Mug">
-                    <div class="product-overlay">
-                        <button class="btn-icon"><i class="fas fa-shopping-cart"></i></button>
-                        <button class="btn-icon"><i class="fas fa-heart"></i></button>
-                    </div>
-                </div>
-                <div class="product-info">
-                    <h3>Floral Custom Mug</h3>
-                    <p class="price">₹499</p>
-                </div>
-            </div>
-
             <!-- Product 2 -->
             <div class="product-card glass-card" data-category="hampers">
                 <div class="product-img-container">
@@ -100,8 +112,8 @@
                     </div>
                 </div>
                 <div class="product-info">
-                    <h3>Premium Festive Hamper</h3>
-                    <p class="price">₹2,499</p>
+                    <h3>Transparent Hampers</h3>
+                    <p class="price">₹580</p>
                 </div>
             </div>
 
@@ -115,23 +127,8 @@
                     </div>
                 </div>
                 <div class="product-info">
-                    <h3>Engraved Wooden Frame</h3>
-                    <p class="price">₹1,299</p>
-                </div>
-            </div>
-            <!-- Product 4 -->
-            <div class="product-card glass-card" data-category="mugs">
-                <div class="product-img-container">
-                    <img src="https://images.unsplash.com/photo-1514228742587-6b1558fcca3d?q=80&w=2070&auto=format&fit=crop"
-                        alt="Magic Mug">
-                    <div class="product-overlay">
-                        <button class="btn-icon"><i class="fas fa-shopping-cart"></i></button>
-                        <button class="btn-icon"><i class="fas fa-heart"></i></button>
-                    </div>
-                </div>
-                <div class="product-info">
-                    <h3>Magic Color-Changing Mug</h3>
-                    <p class="price">₹599</p>
+                    <h3>Photo Frames</h3>
+                    <p class="price">Starts from ₹150</p>
                 </div>
             </div>
             <!-- Product 5 -->
@@ -147,6 +144,21 @@
                 <div class="product-info">
                     <h3>Ring Album</h3>
                     <p class="price">₹199</p>
+                </div>
+            </div>
+            <!-- Product 6 -->
+            <div class="product-card glass-card" data-category="albums">
+                <div class="product-img-container">
+                    <img src="https://m.media-amazon.com/images/X/bxt1/M/Gbxt1RR9MVz6$Tt._SL1920_QL80_FMwebp_.jpg"
+                        alt="Scrapbook Photo Magazine Placeholder">
+                    <div class="product-overlay">
+                        <button class="btn-icon"><i class="fas fa-shopping-cart"></i></button>
+                        <button class="btn-icon"><i class="fas fa-heart"></i></button>
+                    </div>
+                </div>
+                <div class="product-info">
+                    <h3>Photo Magazine</h3>
+                    <p class="price">₹450</p>
                 </div>
             </div>
         </div>

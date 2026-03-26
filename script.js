@@ -137,4 +137,128 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
     animateCounters();
+
+    // ==========================================
+    // 6. Supabase Authentication Layer (E-Commerce)
+    // ==========================================
+    // TODO: Replace these with your actual Supabase URL and Anon Key!
+    const SUPABASE_URL = 'https://hgmjxzsivucowmtjelij.supabase.co';
+    const SUPABASE_ANON_KEY = 'sb_publishable_UFBm_PdNVovwn94IvsvYIw_X5GabOy_';
+    
+    const isSupabaseConfigured = SUPABASE_URL.startsWith('https://');
+    let supabaseClient = null;
+
+    const authOverlay = document.getElementById('auth-overlay');
+    const authForm = document.getElementById('auth-form');
+    const authEmail = document.getElementById('auth-email');
+    const authPassword = document.getElementById('auth-password');
+    const authError = document.getElementById('auth-error');
+    const authSuccess = document.getElementById('auth-success');
+    const authBtn = document.getElementById('auth-btn');
+    const toggleAuthLink = document.getElementById('toggle-auth-link');
+    const authTitle = document.getElementById('auth-title');
+    const authSubtitle = document.getElementById('auth-subtitle');
+    
+    let isLoginMode = true;
+
+    // Toggle between Login and Sign Up Modes smoothly
+    const toggleAuthMode = () => {
+        isLoginMode = !isLoginMode;
+        authError.style.display = 'none';
+        authSuccess.style.display = 'none';
+        
+        if (isLoginMode) {
+            authTitle.innerHTML = 'Log <span class="highlight">In</span>';
+            authSubtitle.innerText = 'Welcome! Log in to access the store.';
+            authBtn.innerText = 'Log In';
+            toggleAuthLink.innerText = 'Sign Up';
+            document.getElementById('toggle-auth-text').childNodes[0].nodeValue = "Don't have an account? ";
+        } else {
+            authTitle.innerHTML = 'Sign <span class="highlight">Up</span>';
+            authSubtitle.innerText = 'Create an account to start shopping.';
+            authBtn.innerText = 'Create Account';
+            toggleAuthLink.innerText = 'Log In';
+            document.getElementById('toggle-auth-text').childNodes[0].nodeValue = "Already have an account? ";
+        }
+    };
+
+    if(toggleAuthLink) {
+        toggleAuthLink.addEventListener('click', toggleAuthMode);
+    }
+
+    const lockStore = () => {
+        document.body.classList.add('auth-locked');
+        authOverlay.classList.add('active');
+        window.scrollTo(0, 0); // Force to top
+    };
+
+    const unlockStore = () => {
+        document.body.classList.remove('auth-locked');
+        authOverlay.classList.remove('active');
+    };
+
+    if (isSupabaseConfigured) {
+        // Initialize Supabase from the CDN we imported in index.html
+        supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        
+        // 1. Check current logged-in session on page load
+        supabaseClient.auth.getSession().then(({ data: { session } }) => {
+            if (session) {
+                unlockStore();
+            } else {
+                lockStore();
+            }
+        });
+
+        // 2. Listen for auth state changes globally (Login / Logout)
+        supabaseClient.auth.onAuthStateChange((_event, session) => {
+            if (session) {
+                unlockStore();
+            } else {
+                lockStore();
+            }
+        });
+
+        // 3. Handle Login/Signup Form Submission
+        authForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            authError.style.display = 'none';
+            authSuccess.style.display = 'none';
+            authBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+            authBtn.disabled = true;
+
+            const email = authEmail.value;
+            const password = authPassword.value;
+
+            try {
+                if (isLoginMode) {
+                    const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
+                    if (error) throw error;
+                    // Note: onAuthStateChange will automatically unlock the store if successful!
+                } else {
+                    const { error } = await supabaseClient.auth.signUp({ email, password });
+                    if (error) throw error;
+                    authSuccess.innerText = 'Account created successfully! You can now log in.';
+                    authSuccess.style.display = 'block';
+                    // Switch back to Login mode for them to log in smoothly
+                    setTimeout(toggleAuthMode, 2000); 
+                }
+            } catch (err) {
+                authError.innerText = err.message;
+                authError.style.display = 'block';
+            } finally {
+                authBtn.innerText = isLoginMode ? 'Log In' : 'Create Account';
+                authBtn.disabled = false;
+            }
+        });
+
+    } else {
+        // Setup is incomplete: User needs to provide Supabase Keys!
+        lockStore();
+        authError.innerHTML = "<strong>Setup Required:</strong> You need to add your Supabase URL and Anon Key inside script.js to activate the store.";
+        authError.style.display = 'block';
+        authBtn.disabled = true;
+        authEmail.disabled = true;
+        authPassword.disabled = true;
+    }
 });

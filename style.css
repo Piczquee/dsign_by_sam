@@ -670,3 +670,31 @@ footer {
         font-size: 2.5rem;
     }
 }
+
+/* Supabase Auth Modal Styles */
+.auth-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(15, 16, 21, 0.95);
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    visibility: hidden;
+    opacity: 0;
+    transition: var(--transition-smooth);
+}
+
+.auth-overlay.active {
+    visibility: visible;
+    opacity: 1;
+}
+
+body.auth-locked {
+    overflow: hidden;
+}
