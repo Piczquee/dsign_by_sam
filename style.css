@@ -647,6 +647,23 @@ footer {
 }
 
 @media (max-width: 768px) {
+    .logo a {
+        font-size: 1.1rem;
+        letter-spacing: 1px;
+    }
+    #user-display-name {
+        display: none !important;
+    }
+    .nav-icons {
+        gap: 10px !important;
+    }
+    .nav-icons a {
+        font-size: 1rem;
+    }
+    .menu-btn {
+        margin-left: 5px !important;
+        font-size: 1.2rem;
+    }
     .nav-links {
         display: none;
         position: absolute;
@@ -782,8 +799,8 @@ body.auth-locked {
         gap: 30px;
     }
     .product-modal-image {
-        position: sticky;
-        top: 20px;
+        position: relative;
+        top: 0;
     }
     .modal-close {
         top: 15px;

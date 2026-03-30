@@ -211,31 +211,68 @@ document.addEventListener('DOMContentLoaded', () => {
         toggleAuthLink.addEventListener('click', toggleAuthMode);
     }
 
-    const lockStore = () => {
-        document.body.classList.add('auth-locked');
-        authOverlay.classList.add('active');
-        window.scrollTo(0, 0); // Force to top
+    const userDisplayName = document.getElementById('user-display-name');
+    const loggedInMenu = document.getElementById('logged-in-menu');
+    const loggedOutMenu = document.getElementById('logged-out-menu');
+    const loginOpenBtn = document.getElementById('login-open-btn');
+    const signupOpenBtn = document.getElementById('signup-open-btn');
+    const closeAuthModal = document.getElementById('close-auth-modal');
+    const userDropdownMenu = document.getElementById('user-dropdown');
+
+    if (closeAuthModal) {
+        closeAuthModal.addEventListener('click', () => {
+            authOverlay.classList.remove('active');
+            document.body.classList.remove('auth-locked');
+        });
+    }
+
+    if (loginOpenBtn) {
+        loginOpenBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            if(!isLoginMode) toggleAuthMode();
+            authOverlay.classList.add('active');
+            document.body.classList.add('auth-locked');
+            if(userDropdownMenu) userDropdownMenu.style.display = 'none';
+        });
+    }
+
+    if (signupOpenBtn) {
+        signupOpenBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            if(isLoginMode) toggleAuthMode();
+            authOverlay.classList.add('active');
+            document.body.classList.add('auth-locked');
+            if(userDropdownMenu) userDropdownMenu.style.display = 'none';
+        });
+    }
+
+    const setLoggedOutState = () => {
+        if(loggedInMenu) loggedInMenu.style.display = 'none';
+        if(loggedOutMenu) loggedOutMenu.style.display = 'flex';
+        if(userDisplayName) userDisplayName.innerText = 'Guest';
+        authOverlay.classList.remove('active');
+        document.body.classList.remove('auth-locked');
     };
 
-    const userDisplayName = document.getElementById('user-display-name');
-
-    const updateUserName = (session) => {
+    const setLoggedInState = (session) => {
+        if(loggedInMenu) loggedInMenu.style.display = 'flex';
+        if(loggedOutMenu) loggedOutMenu.style.display = 'none';
+        
         if (!session || !userDisplayName) return;
         const meta = session.user.user_metadata;
         if (meta) {
             let name = meta.nick_name || meta.full_name;
             if (name) {
                 userDisplayName.innerText = name;
+                authOverlay.classList.remove('active');
+                document.body.classList.remove('auth-locked');
                 return;
             }
         }
-        // Fallback to email identifier if metadata completely missing
         userDisplayName.innerText = session.user.email.split('@')[0];
-    };
-
-    const unlockStore = () => {
-        document.body.classList.remove('auth-locked');
+        
         authOverlay.classList.remove('active');
+        document.body.classList.remove('auth-locked');
     };
 
     if (isSupabaseConfigured) {
@@ -245,20 +282,18 @@ document.addEventListener('DOMContentLoaded', () => {
         // 1. Check current logged-in session on page load
         supabaseClient.auth.getSession().then(({ data: { session } }) => {
             if (session) {
-                updateUserName(session);
-                unlockStore();
+                setLoggedInState(session);
             } else {
-                lockStore();
+                setLoggedOutState();
             }
         });
 
         // 2. Listen for auth state changes globally (Login / Logout)
         supabaseClient.auth.onAuthStateChange((_event, session) => {
             if (session) {
-                updateUserName(session);
-                unlockStore();
+                setLoggedInState(session);
             } else {
-                lockStore();
+                setLoggedOutState();
             }
         });
 
